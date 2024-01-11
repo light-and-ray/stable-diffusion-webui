@@ -7,7 +7,6 @@ from modules.infotext_utils import create_override_settings_dict
 from modules.shared import opts
 import modules.shared as shared
 from modules.ui import plaintext_to_html
-from PIL import Image
 import gradio as gr
 
 
@@ -92,8 +91,7 @@ def txt2img_upscale(id_task: str, request: gr.Request, gallery, gallery_index, g
     shared.total_tqdm.clear()
 
     new_gallery = []
-    for i, image in enumerate(gallery):
-
+    for i in range(len(gallery)):
         if i == gallery_index and getattr(processed.images[0], 'already_saved_as', None):
             geninfo["infotexts"][gallery_index: gallery_index+1] = processed.infotexts
             new_gallery.extend(processed.images)
