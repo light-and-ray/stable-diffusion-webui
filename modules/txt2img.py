@@ -79,10 +79,15 @@ def txt2img_upscale(id_task: str, request: gr.Request, gallery, gallery_index, g
     p.subseed = subseed
 
     with closing(p):
-        processed = modules.scripts.scripts_txt2img.run(p, *p.script_args)
+        save_images_before_highres_fix = shared.opts.save_images_before_highres_fix
+        shared.opts.save_images_before_highres_fix = False
+        try:
+            processed = modules.scripts.scripts_txt2img.run(p, *p.script_args)
 
-        if processed is None:
-            processed = processing.process_images(p)
+            if processed is None:
+                processed = processing.process_images(p)
+        finally:
+            shared.opts.save_images_before_highres_fix = save_images_before_highres_fix
 
     shared.total_tqdm.clear()
 
