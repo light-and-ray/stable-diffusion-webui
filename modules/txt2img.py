@@ -92,12 +92,13 @@ def txt2img_upscale(id_task: str, request: gr.Request, gallery, gallery_index, g
 
     new_gallery = []
     for i in range(len(gallery)):
-        if i == gallery_index and getattr(processed.images[0], 'already_saved_as', None):
+        if i == gallery_index:
             geninfo["infotexts"][gallery_index: gallery_index+1] = processed.infotexts
             new_gallery.extend(processed.images)
         else:
             image_info = gallery[i] if 0 <= i < len(gallery) else gallery[0]
             update_image = infotext_utils.image_from_url_text(image_info)
+            update_image.already_saved_as = update_image.filename
             new_gallery.append(update_image)
 
     return new_gallery, json.dumps(geninfo), plaintext_to_html(processed.info), plaintext_to_html(processed.comments, classname="comments")
