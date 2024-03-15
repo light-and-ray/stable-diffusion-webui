@@ -793,7 +793,7 @@ onUiLoaded(async() => {
 
         targetElement.addEventListener("wheel", e => {
             // change zoom level
-            const operation = e.deltaY > 0 ? "-" : "+";
+            const operation = e.wheelDelta < 0 ? "-" : "+";
             changeZoomLevel(operation, e);
 
             // Handle brush size adjustment with ctrl key pressed
@@ -965,4 +965,25 @@ onUiLoaded(async() => {
 
     // Add integration with Inpaint Anything
     // applyZoomAndPanIntegration("None", ["#ia_sam_image", "#ia_sel_mask"]);
+});
+
+
+onUiLoaded(function(){
+    let isAltPressed = false;
+
+    function handleAltKeyDown(e) {
+        if (e.altKey) {
+            isAltPressed = true;
+        }
+    }
+
+    function handleAltKeyUp(e) {
+        if (isAltPressed) {
+            e.preventDefault();
+        }
+        isAltPressed = false;
+    }
+
+    document.addEventListener("keydown", handleAltKeyDown);
+    document.addEventListener("keyup", handleAltKeyUp);
 });
