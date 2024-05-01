@@ -1,4 +1,5 @@
 import gradio as gr
+from modules import script_callbacks
 
 
 class FormComponent:
@@ -94,6 +95,7 @@ class InputAccordion(gr.Checkbox):
     global_index = 0
 
     def __init__(self, value, **kwargs):
+        script_callbacks.before_component_callback(self, value=value, **kwargs)
         self.accordion_id = kwargs.get('elem_id')
         if self.accordion_id is None:
             self.accordion_id = f"input-accordion-{InputAccordion.global_index}"
@@ -116,6 +118,7 @@ class InputAccordion(gr.Checkbox):
             "open": value,
         }
         self.accordion = gr.Accordion(**kwargs_accordion)
+        script_callbacks.after_component_callback(self, value=value, **kwargs)
 
     def extra(self):
         """Allows you to put something into the label of the accordion.
